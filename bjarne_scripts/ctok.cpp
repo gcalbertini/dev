@@ -14,7 +14,7 @@ double ctock(std::string should_be_cel);
 // Example usage of error()
 int main()
 {
-    std::string c;
+    std::string c;  
     try
     {
         cin >> c;
@@ -56,5 +56,5 @@ double ctock(std::string C) // converts Celsius to Kelvin
     return std::stod(C) + 273.15;
 }
 
-// now simply compile with cmake or g++ ctok.cpp utils.cpp -o ctok
+// now simply compile with cmake or g++ ctok.cpp utils.hpp -o ctok
 // then execute ./ctok (note: on windows)

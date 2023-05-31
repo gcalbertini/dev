@@ -43,6 +43,10 @@
         "xlocinfo": "cpp",
         "xlocnum": "cpp",
         "xmemory": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "algorithm": "cpp",
+        "fstream": "cpp",
+        "random": "cpp",
+        "vector": "cpp"
     }
 }
