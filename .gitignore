@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+# Gtest build folders
+/bjarne_scripts/build
+/bjarne_scripts/Testing
