@@ -51,5 +51,6 @@
         "list": "cpp",
         "unordered_map": "cpp",
         "xhash": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "C:/Users/gcalb/OneDrive/Desktop/dev/bjarne_scripts"
 }
