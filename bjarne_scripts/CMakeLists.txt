@@ -23,8 +23,8 @@ include_directories(
     # Add more include directories as needed
 )
 set(TEST_HEADERS
-    src/naiveLList.hpp
     src/utils.hpp
+    src/naiveLList.hpp
     #src/Chrono.hpp
     # Add more header files as needed
 )

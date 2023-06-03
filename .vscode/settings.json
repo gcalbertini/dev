@@ -50,7 +50,16 @@
         "vector": "cpp",
         "list": "cpp",
         "unordered_map": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "array": "cpp",
+        "chrono": "cpp",
+        "deque": "cpp",
+        "format": "cpp",
+        "functional": "cpp",
+        "variant": "cpp",
+        "xlocbuf": "cpp",
+        "xloctime": "cpp",
+        "xtree": "cpp"
     },
     "cmake.sourceDirectory": "C:/Users/gcalb/OneDrive/Desktop/dev/bjarne_scripts"
 }

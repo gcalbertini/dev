@@ -1,10 +1,8 @@
 #ifndef MY_CHRONO_HPP // lowercase as there is already a std library chrono class much more robust than that of this exercise
 #define MY_CHRONO_HPP
 
-#ifndef UTILS_HPP
-#define UTILS_HPP
 #include "utils.hpp"
-#endif // UTILS_HPP
+
 
 namespace Chrono
 {
