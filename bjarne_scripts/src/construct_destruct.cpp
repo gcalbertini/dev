@@ -48,8 +48,7 @@ struct XX {
 
 //https://stackoverflow.com/questions/50083082/crtexe-c-issue-about-debugging-c-c-files-in-vscode
 int main(int argc, char** argv) {
-    cout << 'a';
-    /*
+
     X loc{4};         // local variable;
     X loc2{loc};      // copy construction
     loc = X{5};       // copy assignment
@@ -65,7 +64,6 @@ int main(int argc, char** argv) {
     delete p;
     X* pp = new X[5];
     delete[] pp;
-
+    
     return 0;
-    */
 }
