@@ -58,6 +58,9 @@ int main(int argc, char **argv)
 {
     // A copy constructor is used to initialize a *previously uninitialized object* from some other object's data: A(const A& rhs) : data_(rhs.data_) {}
     // An assignment operator is used to *replace the data of a previously initialized object* with some other object's data: A& operator=(const A& rhs) {data_ = rhs.data_; return *this;}
+    
+    // Note that the following illustrates the costly and unneeded deep copies that can happen implicitly--thus also calling a copy constructor--when objects are passed by value ("value semantics"), as opposed to 
+    // being passed by reference. C++ 11 introduced "T&&", a non-const reference type allowing for "move semantics" i.e. with move constructors or assignment (not shown here)
 
     X loc{4}; // local variable;
     cout << "\n";
@@ -67,7 +70,7 @@ int main(int argc, char **argv)
     cout << "\n";
     loc2 = copy(loc); // first: a copy of loc passed to copy(loc') and makes implied call to copy constructor so that (uninitialized) loc'<--copy of loc;
                       // next: copy routine is called; local object a is created by IMPLIED calling copy instructor so (uninitialized) a<--loc' and returns initialized a to become object for copy(loc');
-                      // next: copy assignment called by (previously) initialized loc2; finally: destructor for a called and then destructor for copy(a')
+                      // next: copy assignment called by (previously) initialized loc2; finally: destructor for a called and then destructor for copy(a)
     cout << "\n";
     loc2 = copy2(loc); // first: a copy of loc passed to copy2(loc') and loc' makes implied call to copy constructor so that loc'<--copy of loc;
                        // next: copy2 routine is called; local object aa is created (instantaneously uninitialized) and EXPLICITLY calls copy instructor so aa<--a and returns aa;

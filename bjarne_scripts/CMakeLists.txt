@@ -16,7 +16,7 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-enable_testing() # enables the use of the add_test() command and other testing-related functionality provided by CMake
+enable_testing() # enables the use of Ctest
 
 include_directories(
     src
@@ -37,13 +37,34 @@ set(TEST_SOURCES
     # Add more source files as needed
 )
 
-# Create the test executable
+# Create the test executable and name it tests
 add_executable(tests ${TEST_HEADERS} ${TEST_SOURCES})
 
+# Set the TEST_EXECUTABLE variable
+set(TEST_EXECUTABLE "tests")
 
 # Link necessary libraries
-target_link_libraries(tests gtest GTest::gtest_main)
+target_link_libraries(${TEST_EXECUTABLE} gtest GTest::gtest_main)
+
+# Add a custom test target
+add_custom_target(run-tests COMMAND ${TEST_EXECUTABLE} DEPENDS ${TEST_EXECUTABLE})
+
+# Enable running specific tests with custom arguments
+add_test(NAME MyTests COMMAND ${TEST_EXECUTABLE})
+
+# Define a CMake variable for specifying the test filter
+set(TEST_FILTER "" CACHE STRING "Filter for running specific tests")
+
+# Add a custom target for running specific tests
+add_custom_target(run-specific-tests
+    COMMAND ${CMAKE_CTEST_COMMAND} --verbose --gtest_filter=${TEST_FILTER}
+    DEPENDS ${TEST_EXECUTABLE}
+   # WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+)
 
 # Discover tests and add them to CTest
 include(GoogleTest)
 gtest_discover_tests(tests)
+
+# After compile to build, then can "cmake --build . --target run-tests" after this for all tests 
+# OR for specifc tests,            'cmake --build . --target run-specific-tests -- -DTEST_FILTER="XyzTest.NameOfTest" '
