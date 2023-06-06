@@ -34,3 +34,29 @@
 # Gtest build folders
 /bjarne_scripts/build
 /bjarne_scripts/Testing
+
+# Compiled Object files
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Executables
+*.exe
+*.out
+
+# Ninja build files
+build/
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+CMakeTmp/
+
+# Generated CMake files
+cmake_install.cmake
+CMakeLists.txt.user
+CTestTestfile.cmake
+Makefile
