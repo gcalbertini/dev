@@ -2,7 +2,7 @@
 
 namespace myNaive
 {
-    babyVector::babyVector(std::size_t s) : sz{s}, elem{new double[s]}, space{0}
+    babyVector::babyVector(std::size_t s) : sz{s}, elem{new double[s]}, space{s}
     {
         // constructor to alloc doubles; let elem point to them and store s in sz the current size
         // allows us to write babyVector v(3) with three elements set to default value of 0.0
@@ -10,7 +10,7 @@ namespace myNaive
             elem[i] = 0.0; // init elements with 0.0 by default
     }                      // default constructor
 
-    babyVector::babyVector(std::initializer_list<double> lst) : sz{lst.size()}, elem{new double[sz]}, space{0}
+    babyVector::babyVector(std::initializer_list<double> lst) : sz{lst.size()}, elem{new double[sz]}, space{lst.size()}
     {
 
         // included size_t as there was implicit conversion of lst.size() which is of type size_t (e.g. a 64-bit unsigned integer) to an int

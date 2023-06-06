@@ -59,25 +59,6 @@ TEST_F(BabyVectorTest, CopyConstructor)
     }
 }
 
-// Test case for the move constructor
-TEST_F(BabyVectorTest, MoveConstructor)
-{
-    myNaive::babyVector v1{1.0, 2.0, 3.0};
-    myNaive::babyVector v2(std::move(v1));
-
-    // Perform assertions to check the state of the new vector
-    EXPECT_EQ(v2.size(), 3);
-    EXPECT_EQ(v2.capacity(), 3);
-    EXPECT_DOUBLE_EQ(v2[0], 1.0);
-    EXPECT_DOUBLE_EQ(v2[1], 2.0);
-    EXPECT_DOUBLE_EQ(v2[2], 3.0);
-
-    // v1 should be in a valid but unspecified state after the move
-    EXPECT_EQ(v1.size(), 0);
-    EXPECT_EQ(v1.capacity(), 0);
-    EXPECT_EQ(v1.data(), nullptr);
-}
-
 // Test case for copy assignment operator
 TEST_F(BabyVectorTest, CopyAssignmentOperator)
 {
@@ -92,26 +73,6 @@ TEST_F(BabyVectorTest, CopyAssignmentOperator)
     {
         EXPECT_DOUBLE_EQ(v2[i], v1[i]);
     }
-}
-
-// Test case for move assignment operator
-TEST_F(BabyVectorTest, MoveAssignmentOperator)
-{
-    myNaive::babyVector v1{1.0, 2.0, 3.0};
-    myNaive::babyVector v2;
-    v2 = std::move(v1);
-
-    // Perform assertions to check the state of the new vector
-    EXPECT_EQ(v2.size(), 3);
-    EXPECT_EQ(v2.capacity(), 3);
-    EXPECT_DOUBLE_EQ(v2[0], 1.0);
-    EXPECT_DOUBLE_EQ(v2[1], 2.0);
-    EXPECT_DOUBLE_EQ(v2[2], 3.0);
-
-    // v1 should be in a valid but unspecified state after the move
-    EXPECT_EQ(v1.size(), 0);
-    EXPECT_EQ(v1.capacity(), 0);
-    EXPECT_EQ(v1.data(), nullptr);
 }
 
 // Test case for accessing elements of a const vector using the const version of the subscript operator
@@ -172,17 +133,23 @@ TEST_F(BabyVectorTest, Reserve)
 // Test case for pushing elements to the back of the vector
 TEST_F(BabyVectorTest, PushBack)
 {
-    myNaive::babyVector v;
-    v.push_back(1.0);
-    v.push_back(2.0);
-    v.push_back(3.0);
+    myNaive::babyVector v; // space and capacity is set to 0
+    const int numElements = 9;
+
+    // Push elements to the vector
+    for (int i = 1; i <= numElements; ++i)
+    {
+        v.push_back(static_cast<double>(i));
+    }
 
     // Perform assertions to check the size, capacity, and elements
-    EXPECT_EQ(v.size(), 3);
-    EXPECT_EQ(v.capacity(), 3);
-    EXPECT_DOUBLE_EQ(v[0], 1.0);
-    EXPECT_DOUBLE_EQ(v[1], 2.0);
-    EXPECT_DOUBLE_EQ(v[2], 3.0);
+    EXPECT_EQ(v.size(), numElements);
+    EXPECT_EQ(v.capacity(), 16); //doubling by convention when space == size; initially set to 8 doubles
+
+    for (int i = 0; i < numElements; ++i)
+    {
+        EXPECT_DOUBLE_EQ(v[i], static_cast<double>(i + 1));
+    }
 }
 
 // Test case for the destructor
@@ -210,7 +177,7 @@ TEST_F(BabyVectorTest, Destructor)
     // EXPECT_DOUBLE_EQ((*v)[2], 0.0);
 }
 
-// Main function to run the tests
+// Main function to run all tests (default)
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);

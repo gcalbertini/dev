@@ -54,6 +54,12 @@ struct XX
     X b;
 };
 
+X move_to(X &&a){
+    X a(1);
+    
+
+}
+
 int main(int argc, char **argv)
 {
     // A copy constructor is used to initialize a *previously uninitialized object* from some other object's data: A(const A& rhs) : data_(rhs.data_) {}
