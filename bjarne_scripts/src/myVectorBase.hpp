@@ -40,13 +40,12 @@ struct myVecBase // struct members public by default
 
     myVecBase(const A &a, initializer_list<T> lst) : alloc{a}, sz{lst.size()}, elem{allocator_traits<A>::allocate(alloc, sz)}, space{sz}
     {
-        uninitialized_copy(lst.begin(), lst.end(), this->elem); // or just elem as this is from object calling its own member
+        uninitialized_copy(lst.begin(), lst.end(), this->elem); // or just elem as this is from object calling its own member (and a base class)
         cout << "myVecBase::myVecBase(alloc_lst=" << alloc << ", size=" << lst.size() ");\n";
     }
 
-    ~myVecBase()
+    virtual ~myVecBase() //by making the destructor virtual, the derived class destructors will be called properly when deleting through a pointer to the base class
     {
-        alloc.deallocate(elem, space);
         cout << "myVecBase::~myVecBase();\n";
     } // destructor
 };

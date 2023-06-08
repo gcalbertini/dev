@@ -26,6 +26,20 @@ namespace myNaive
         generalVector &operator=(const generalVector &rhs);       // deep copy assignment for originally init object
         const double &operator[](int n) const { return elem[n]; } // access: read for const vector
         double &operator[](int n) { return elem[n]; }             // access: read for non-const vector
+
+        // king shit
+        std::size_t size() const { return sz; } // the current size
+        void resize(int newsize);
+        void reserve(int newalloc);
+        std::size_t capacity() const { return space; }
+        void push_back(const T &val);
+        double *checkElem() { return elem; }
+
+        ~generalVector()
+        {
+            allocator_traits<A>::destroy(this->alloc, this->elem); // Call the destructor for each element as we dealt with uninitialized memory buffers
+            allocator_traits<A>::deallocate(this->alloc, this->elem, this->space);
+        }
     };
 
 };

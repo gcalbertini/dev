@@ -1,5 +1,6 @@
 #include "genericVector.hpp"
 
+// Note: Explicitly need ot use this-> as we refer to a member of the derived class as opposed to base class
 namespace myNaive
 {
     // Default constructor with size_t passed as arg
@@ -30,7 +31,7 @@ namespace myNaive
     // Copy assignment overload
     template <class T, typename A>
     generalVector<T, A> &generalVector<T, A>::operator=(const generalVector &rhs)
-    {                     // copy assignment; this added for clarity
+    {
         if (this != &rhs) // Self-assignment check
         {
             // Deallocate existing memory
@@ -47,6 +48,38 @@ namespace myNaive
         }
         cout << "I used copy assignment overload. Base didn't have one. New space is " << space << " and new size is " << sz << "!\n";
         return *this;
+    }
+
+    template <class T, typename A>
+    void generalVector<T, A>::resize(int newsize)
+    {
+        reserve(newsize);
+        for (int i = sz; i < newsize; ++i)
+            elem[i] = T(); // init new elements
+        sz = newsize;
+    }
+
+    template <class T, typename A>
+    void generalVector<T, A>::reserve(int newalloc)
+    {
+        if (newalloc <= capacity())
+            return; // never decrease allocation
+        // allocate new space here
+        myVecBase<T, A> b{this->alloc, newalloc};                    // allocate new space
+        uninitialized_copy(this->elem, this->elem + size(), b.elem); // copy
+        allocator_traits<A>::destroy(this->alloc, this->elem);       // destroy old
+        swap<myVecBase<T, A>>(*this, b);                             // swap representations
+    }
+
+    template <class T, typename A>
+    void generalVector<T, A>::push_back(const T &val)
+    {
+        if (space == 0)
+            reserve(8);       // start with space for 8 elements
+        else if (sz == space) // get more space, usually done by doubling it
+            reserve(2 * space);
+        elem[sz] = val;
+        ++sz;
     }
 
     //  typically don't need to use destroy explicitly for move semantics; during the move operation, the source object is typically left
