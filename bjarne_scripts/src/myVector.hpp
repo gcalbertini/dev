@@ -32,13 +32,13 @@ namespace myNaive
         // overloads
         babyVector &operator=(babyVector &&rhs);                  // move assignment for prev init object
         babyVector &operator=(const babyVector &rhs);             // deep copy assignment for originally init object
-        const double &operator[](int n) const { return elem[n]; } // access: read for const vector
-        double &operator[](int n) { return elem[n]; }             // access: read for non-const vector
+        const double &operator[](size_t n) const { return elem[n]; } // access: read for const vector
+        double &operator[](size_t n) { return elem[n]; }             // access: read for non-const vector
 
         // king shit
         std::size_t size() const { return sz; } // the current size
-        void resize(int newsize);
-        void reserve(int newalloc);
+        void resize(size_t newsize);
+        void reserve(size_t newalloc);
         std::size_t capacity() const { return space; }
         void push_back(const double &d);
         double *checkElem() { return elem; }

@@ -1,6 +1,8 @@
 #ifndef MY_VEC_TEMPLATE_HPP
 #define MY_VEC_TEMPLATE_HPP
 
+#include <memory>    // Include the <memory> header for C++17/20 allocator
+#include <algorithm> //for swap
 #include "myVectorBase.hpp"
 
 // Naive: only assumed this will operate under limited conditions for standard numerical type objects lol
@@ -9,7 +11,7 @@
 namespace myNaive
 {
     template <class T, typename A = std::allocator<T>> // class or typename used interchangeably; default allocator used
-    class generalVector : private myVecBase<T, A>
+    class generalVector : public myVecBase<T, A>
     {
     public:
         // constructors
@@ -22,23 +24,18 @@ namespace myNaive
         generalVector(generalVector &&rhs);          // move constructor to avoid expensive copies for prev unint object (C++ 11)
 
         // overloads
-        generalVector &operator=(generalVector &&rhs);            // move assignment for prev init object
-        generalVector &operator=(const generalVector &rhs);       // deep copy assignment for originally init object
-        const double &operator[](int n) const { return elem[n]; } // access: read for const vector
-        double &operator[](int n) { return elem[n]; }             // access: read for non-const vector
+        generalVector &operator=(generalVector &&rhs);      // move assignment for prev init object
+        generalVector &operator=(const generalVector &rhs); // deep copy assignment for originally init object
 
         // king shit
-        std::size_t size() const { return sz; } // the current size
-        void resize(int newsize);
-        void reserve(int newalloc);
-        std::size_t capacity() const { return space; }
+        void resize(size_t newsize);
+        void reserve(size_t newalloc);
         void push_back(const T &val);
-        double *checkElem() { return elem; }
 
         ~generalVector()
         {
-            allocator_traits<A>::destroy(this->alloc, this->elem); // Call the destructor for each element as we dealt with uninitialized memory buffers
-            allocator_traits<A>::deallocate(this->alloc, this->elem, this->space);
+            std::allocator_traits<A>::destroy(this->alloc, this->elem); // Call the destructor for each element as we dealt with uninitialized memory buffers
+            std::allocator_traits<A>::deallocate(this->alloc, this->elem, this->space);
         }
     };
 

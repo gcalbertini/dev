@@ -23,42 +23,49 @@ enable_testing()
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # List all your source files individually
-set(TEST_SOURCES
-    ${SRC_DIR}/myVector.cpp
-    ${SRC_DIR}/test_myVector.cpp
+set(SRC_FILES
+    ${SRC_DIR}/genericVector.cpp
     # Add more source files as needed
+)
+
+# Create the library target
+add_library(my_library ${SRC_FILES})
+
+# Set the include directories for the library target
+target_include_directories(my_library PUBLIC ${SRC_DIR})
+
+# Set the test directory
+set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+
+# List all your test source files individually
+set(TEST_SOURCES
+    ${TEST_DIR}/test_genericVector.cpp
+    # Add more test source files as needed
 )
 
 # Create the test executable and name it tests
 add_executable(tests ${TEST_SOURCES})
 
-# Set the include directories for the tests target
+# Set the include directories for the test target
 target_include_directories(tests PRIVATE ${SRC_DIR})
 
 # Link necessary libraries
-target_link_libraries(tests PRIVATE gtest GTest::gtest_main)
+target_link_libraries(tests PRIVATE my_library gtest GTest::gtest_main)
 
-# Add a custom target to run all tests
-add_custom_target(run-tests COMMAND ${CMAKE_CTEST_COMMAND} --verbose --parallel
-                  DEPENDS tests)
+# Following needs to be built with clang using Msys2 FML -- toolchain must be installed and paths updated, etc
+## Enable AddressSanitizer for the tests executable
+#set_target_properties(tests PROPERTIES
+#    COMPILE_FLAGS "-fsanitize=address -fno-omit-frame-pointer"
+#    LINK_FLAGS "-fsanitize=address"
+#)
+#
+## Add a custom target to run all tests with AddressSanitizer
+#add_custom_target(run-tests-asan
+#    COMMAND ASAN_OPTIONS=symbolize=1 ./tests
+#    DEPENDS tests
+#)
+#
 
 # Discover tests and add them to CTest
 include(GoogleTest)
 gtest_discover_tests(tests)
-
-# Enable running specific tests with custom arguments
-set(TEST_FILTER "" CACHE STRING "Filter for running specific tests")
-
-# Add a custom target for running specific tests
-add_custom_target(run-specific-tests
-    COMMAND ${CMAKE_CTEST_COMMAND} --verbose --gtest_filter=${TEST_FILTER}
-    DEPENDS tests
-)
-
-add_custom_target(run-bad-tests
-    COMMAND ${CMAKE_CTEST_COMMAND} --rerun-failed --output-on-failure
-    DEPENDS tests
-)
-
-# After compile to build, then can use "cmake --build build --target run-tests" to run all tests
-# OR for specific tests, use 'cmake --build build --target run-specific-tests -- -DTEST_FILTER="XyzTest.NameOfTest" '

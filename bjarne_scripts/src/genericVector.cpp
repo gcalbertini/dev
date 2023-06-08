@@ -1,3 +1,5 @@
+#include <memory> // Include the <memory> header for C++17/20 allocator
+#include <algorithm> //for swap
 #include "genericVector.hpp"
 
 // Note: Explicitly need ot use this-> as we refer to a member of the derived class as opposed to base class
@@ -5,16 +7,16 @@ namespace myNaive
 {
     // Default constructor with size_t passed as arg
     template <class T, typename A>
-    generalVector<T, A>::generalVector(size_t n) : myVecBase<T, A>(n) //(A{}, n) but A's default constructor for our already default allocator doesn't need to be overwritten again
+    generalVector<T, A>::generalVector(size_t n) : myVecBase<T, A>(A{}, n)
     {
-        cout << "I inherited default constructor from the base!\n";
+        std::cout << "I inherited default constructor from the base!\n";
     }
 
     // Default list-init constructor
     template <class T, typename A>
-    generalVector<T, A>::generalVector(std::initializer_list<T> lst) : myVecBase<T, A>(lst.size())
+    generalVector<T, A>::generalVector(std::initializer_list<T> lst) : myVecBase<T, A>(A{}, lst.size())
     {
-        cout << "I inherited default list constructor from the base and filled with default values!\n";
+        std::cout << "I inherited default list constructor from the base and filled with default values!\n";
     }
 
     // Copy constructor
@@ -22,10 +24,10 @@ namespace myNaive
     generalVector<T, A>::generalVector(const generalVector &rhs)
         : myVecBase<T, A>(rhs.alloc, rhs.space)
     {
-        uninitialized_copy(rhs.elem, rhs.elem + rhs.sz, this->elem); // Since construct(...) deprecated in C++17/20: calls construct on each element in the input sequence to “copy” that
-                                                                     // element into the destination. That algorithm uses the iterator dereference operator
+        std::uninitialized_copy(rhs.elem, rhs.elem + rhs.sz, this->elem); // Since construct(...) deprecated in C++17/20: calls construct on each element in the input sequence to “copy” that
+                                                                     // element size_to the destination. That algorithm uses the iterator dereference operator
                                                                      // to fetch elements from the input sequence
-        cout << "I made a new (copy) constructor! Base didn't have one. New space is " << space << " and new size is " << sz << "!\n";
+        std::cout << "I made a new (copy) constructor! Base didn't have one. New space is " << this->space << " and new size is " << this->sz << "!\n";
     }
 
     // Copy assignment overload
@@ -44,47 +46,47 @@ namespace myNaive
 
             // Allocate new memory and copy the elements
             this->elem = std::allocator_traits<A>::allocate(this->alloc, this->space);
-            uninitialized_copy(rhs.elem, rhs.elem + rhs.sz, this->elem);
+            std::uninitialized_copy(rhs.elem, rhs.elem + rhs.sz, this->elem);
         }
-        cout << "I used copy assignment overload. Base didn't have one. New space is " << space << " and new size is " << sz << "!\n";
+        std::cout << "I used copy assignment overload. Base didn't have one. New space is " << this->space << " and new size is " << this->sz << "!\n";
         return *this;
     }
 
     template <class T, typename A>
-    void generalVector<T, A>::resize(int newsize)
+    void generalVector<T, A>::resize(size_t newsize)
     {
         reserve(newsize);
-        for (int i = sz; i < newsize; ++i)
-            elem[i] = T(); // init new elements
-        sz = newsize;
+        for (size_t i = this->sz; i < newsize; ++i)
+            this->elem[i] = T(); // init new elements
+        this->sz = newsize;
     }
 
     template <class T, typename A>
-    void generalVector<T, A>::reserve(int newalloc)
+    void generalVector<T, A>::reserve(size_t newalloc)
     {
-        if (newalloc <= capacity())
+        if (newalloc <= this->capacity())
             return; // never decrease allocation
         // allocate new space here
         myVecBase<T, A> b{this->alloc, newalloc};                    // allocate new space
-        uninitialized_copy(this->elem, this->elem + size(), b.elem); // copy
-        allocator_traits<A>::destroy(this->alloc, this->elem);       // destroy old
-        swap<myVecBase<T, A>>(*this, b);                             // swap representations
+        std::uninitialized_copy(this->elem, this->elem + this->size(), b.elem); // copy
+        std::allocator_traits<A>::destroy(this->alloc, this->elem);       // destroy old
+        std::swap<myVecBase<T, A>>(*this, b);                             // swap representations
     }
 
     template <class T, typename A>
     void generalVector<T, A>::push_back(const T &val)
     {
-        if (space == 0)
+        if (this->space == 0)
             reserve(8);       // start with space for 8 elements
-        else if (sz == space) // get more space, usually done by doubling it
-            reserve(2 * space);
-        elem[sz] = val;
-        ++sz;
+        else if (this->sz == this->space) // get more space, usually done by doubling it
+            reserve(2 * this->space);
+        this->elem[this->sz] = val;
+        this->sz = this->sz + 1;
     }
 
     //  typically don't need to use destroy explicitly for move semantics; during the move operation, the source object is typically left
     // in a state where it's safe to be destroyed, and the destructor will be called on the source object when it goes out of scope or is explicitly destroyed
-    // same logic applies to copy ops where intent is to copy over objects first and foremost
+    // same logic applies to copy ops where size_tent is to copy over objects first and foremost
 
     // Move constructor
     template <class T, typename A>
@@ -95,7 +97,7 @@ namespace myNaive
         rhs.elem = nullptr;
         rhs.sz = 0;
         rhs.space = 0;
-        cout << "I created another move constructor instead of STL default. Base didn't have one. New space is " << space << " and new size is " << sz << "!\n";
+        std::cout << "I created another move constructor instead of STL default. Base didn't have one. New space is " << this->space << " and new size is " << this->sz << "!\n";
     }
 
     // Move assignment
@@ -112,7 +114,7 @@ namespace myNaive
             this->sz = rhs.sz;
             this->space = rhs.space;
 
-            // Move the pointer from the rhs object
+            // Move the posize_ter from the rhs object
             this->elem = rhs.elem;
 
             // Reset the rhs object
@@ -120,7 +122,7 @@ namespace myNaive
             rhs.sz = 0;
             rhs.space = 0;
         }
-        cout << "I used move assignment. Base didn't have one. New space is " << space << " and new size is " << sz << "!\n";
+        std::cout << "I used move assignment. Base didn't have one. New space is " << this->space << " and new size is " << this->sz << "!\n";
         return *this;
     }
 
