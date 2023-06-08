@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "naiveLList.hpp"
+#include "../src/naiveLList.hpp"
 
 // Test fixture for the Link class
 class LinkTest : public ::testing::Test

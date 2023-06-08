@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "myVector.hpp"
+#include "../src/myVector.hpp"
 
 // Test fixture
 class BabyVectorTest : public ::testing::Test

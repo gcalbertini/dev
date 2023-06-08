@@ -6,8 +6,8 @@
 #include <iostream>  //for std namespace stuff
 #include <fstream>
 #include <vector>
-#include "utils.hpp"
-#include "Chrono.hpp"
+#include "../src/utils.hpp"
+#include "../src/Chrono.hpp"
 
 namespace Chrono
 {
