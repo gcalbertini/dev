@@ -24,7 +24,7 @@ set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # List all your source files individually
 set(SRC_FILES
-    ${SRC_DIR}/genericVector.cpp
+    ${SRC_DIR}/generalVec.cpp
     # Add more source files as needed
 )
 
@@ -39,7 +39,7 @@ set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 # List all your test source files individually
 set(TEST_SOURCES
-    ${TEST_DIR}/test_genericVector.cpp
+    ${TEST_DIR}/test_generalVec.cpp
     # Add more test source files as needed
 )
 
