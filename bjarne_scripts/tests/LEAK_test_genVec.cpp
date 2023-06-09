@@ -1,13 +1,13 @@
+
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include <iostream>
 #include <vector>
 #include <initializer_list>
 #include <stdexcept>
 
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
-#include "generalVec.cpp"
+#include "../src/generalVec.cpp"
 
 template <typename T>
 void testDefaultConstructor()
@@ -270,10 +270,13 @@ void testSubscriptOperator()
         std::cout << "SubscriptOperator: Failed" << std::endl;
 }
 
+void generateMemoryLeak()
+{
+    int* ptr = new int(10); // Allocate memory without freeing it
+}
+
 int main()
 {
-    // Enable memory leak detection
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
     testDefaultConstructor<int>();
     testSizeConstructor<int>();
@@ -295,8 +298,12 @@ int main()
     testAt<float>();
     testSubscriptOperator<float>();
 
+    generateMemoryLeak();
+
     // Check for memory leaks and print the leak report if found
-    _CrtDumpMemoryLeaks();
+    // Enable memory leak detection
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+    _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
 
     return 0;
 }
