@@ -4,7 +4,6 @@ namespace myNaive
 {
     babyVector::babyVector(std::size_t s) : sz{s}, elem{new double[s]}, space{s}
     {
-        // constructor to alloc doubles; let elem posize_t to them and store s in sz the current size
         // allows us to write babyVector v(3) with three elements set to default value of 0.0
         for (std::size_t i = 0; i < s; ++i)
             elem[i] = 0.0; // init elements with 0.0 by default
@@ -13,7 +12,7 @@ namespace myNaive
     babyVector::babyVector(std::initializer_list<double> lst) : sz{lst.size()}, elem{new double[sz]}, space{lst.size()}
     {
 
-        // included size_t as there was implicit conversion of lst.size() which is of type size_t (e.g. a 64-bit unsigned size_teger) to an size_t
+        // included size_t as there was implicit conversion of lst.size() which is of type size_t (e.g. a 64-bit unsigned int) to an size_t
         // (e.g. 32-bit signed) and with {} gives a narrowing error
         // Now allows us to write babyVector v {1.0, 2.0, 3.0} instead of
         // babyVector v(3); then v[0] = 1.0, etc

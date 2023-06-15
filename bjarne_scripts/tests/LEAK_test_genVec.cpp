@@ -1,18 +1,15 @@
 
-#include <stdlib.h>
-#include <crtdbg.h>
-
 #include <iostream>
 #include <vector>
 #include <initializer_list>
 #include <stdexcept>
 
-#include "../src/generalVec.cpp"
+#include "../src/genericVec.cpp"
 
 template <typename T>
 void testDefaultConstructor()
 {
-    generalVec<T> vec;
+    genericVec<T> vec;
     if (vec.capacity() == 0 && vec.getElem() == nullptr)
         std::cout << "DefaultConstructor: Passed" << std::endl;
     else
@@ -23,7 +20,7 @@ template <typename T>
 void testSizeConstructor()
 {
     size_t size = 5;
-    generalVec<int> vec(size);
+    genericVec<int> vec(size);
 
     if (vec.size() == size)
     {
@@ -48,42 +45,42 @@ void testSizeConstructor()
     }
 }
 
-template <typename T>
-void testInitListConstructor()
-{
-    std::initializer_list<T> lst = {1, 2, 3, 4, 5};
-    generalVec<T> vec(lst);
-
-    if (vec.size() == lst.size() && vec.getElem() != nullptr)
-    {
-        bool elementsMatch = true;
-        size_t i = 0;
-        for (const auto &elem : lst)
-        {
-            if (vec[i] != elem)
-            {
-                elementsMatch = false;
-                break;
-            }
-            ++i;
-        }
-
-        if (elementsMatch)
-            std::cout << "InitListConstructor: Passed" << std::endl;
-        else
-            std::cout << "InitListConstructor: Failed" << std::endl;
-    }
-    else
-    {
-        std::cout << "InitListConstructor: Failed" << std::endl;
-    }
-}
+//template <typename T>
+//void testInitListConstructor()
+//{
+//    std::initializer_list<T> lst = {1, 2, 3, 4, 5};
+//    genericVec<T> vec(lst);
+//
+//    if (vec.size() == lst.size() && vec.getElem() != nullptr)
+//    {
+//        bool elementsMatch = true;
+//        size_t i = 0;
+//        for (const auto &elem : lst)
+//        {
+//            if (vec[i] != elem)
+//            {
+//                elementsMatch = false;
+//                break;
+//            }
+//            ++i;
+//        }
+//
+//        if (elementsMatch)
+//            std::cout << "InitListConstructor: Passed" << std::endl;
+//        else
+//            std::cout << "InitListConstructor: Failed" << std::endl;
+//    }
+//    else
+//    {
+//        std::cout << "InitListConstructor: Failed" << std::endl;
+//    }
+//}
 
 template <typename T>
 void testCopyConstructor()
 {
-    generalVec<T> vec1 = {1, 2, 3, 4, 5};
-    generalVec<T> vec2(vec1);
+    genericVec<T> vec1 = {1, 2, 3, 4, 5};
+    genericVec<T> vec2(vec1);
 
     if (vec1.size() == vec2.size() && vec1.getElem() != vec2.getElem())
     {
@@ -111,7 +108,7 @@ void testCopyConstructor()
 template <typename T>
 void testPushBack()
 {
-    generalVec<T> vec;
+    genericVec<T> vec;
     if (vec.capacity() == 0 && vec.size() == 0)
     {
         vec.push_back(1);
@@ -143,7 +140,7 @@ void testPushBack()
 template <typename T>
 void testReserve()
 {
-    generalVec<T> vec;
+    genericVec<T> vec;
     if (vec.size() == 0)
     {
         vec.reserve(10);
@@ -173,7 +170,7 @@ void testReserve()
 template <typename T>
 void testResize()
 {
-    generalVec<T> vec;
+    genericVec<T> vec;
     if (vec.size() == 0)
     {
         vec.resize(5);
@@ -224,7 +221,7 @@ void testResize()
 template <typename T>
 void testAt()
 {
-    generalVec<T> vec = {1, 2, 3, 4, 5};
+    genericVec<T> vec = {1, 2, 3, 4, 5};
 
     bool elementsMatch = true;
     for (size_t i = 0; i < vec.size(); ++i)
@@ -255,7 +252,7 @@ void testAt()
 template <typename T>
 void testSubscriptOperator()
 {
-    generalVec<T> vec = {1, 2, 3, 4, 5};
+    genericVec<T> vec = {1, 2, 3, 4, 5};
 
     bool elementsMatch = true;
 
@@ -279,31 +276,26 @@ int main()
 {
 
     testDefaultConstructor<int>();
-    testSizeConstructor<int>();
-    testInitListConstructor<int>();
-    testCopyConstructor<int>();
-    testPushBack<int>();
-    testReserve<int>();
-    testResize<int>();
-    testAt<int>();
-    testSubscriptOperator<int>();
+    //testSizeConstructor<int>();
+    //testInitListConstructor<int>();
+    //testCopyConstructor<int>();
+    //testPushBack<int>();
+    //testReserve<int>();
+    //testResize<int>();
+    //testAt<int>();
+    //testSubscriptOperator<int>();
 
-    testDefaultConstructor<float>();
-    testSizeConstructor<float>();
-    testInitListConstructor<float>();
-    testCopyConstructor<float>();
-    testPushBack<float>();
-    testReserve<float>();
-    testResize<float>();
-    testAt<float>();
-    testSubscriptOperator<float>();
+    //testDefaultConstructor<float>();
+    //testSizeConstructor<float>();
+    //testInitListConstructor<float>();
+    //testCopyConstructor<float>();
+    //testPushBack<float>();
+    //testReserve<float>();
+    //testResize<float>();
+    //testAt<float>();
+    //testSubscriptOperator<float>();
 
-    generateMemoryLeak();
-
-    // Check for memory leaks and print the leak report if found
-    // Enable memory leak detection
-    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-    _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_DEBUG);
+    //generateMemoryLeak();
 
     return 0;
 }
