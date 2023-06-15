@@ -4,7 +4,7 @@ namespace myNaive
 {
     babyVector::babyVector(std::size_t s) : sz{s}, elem{new double[s]}, space{s}
     {
-        // constructor to alloc doubles; let elem point to them and store s in sz the current size
+        // constructor to alloc doubles; let elem posize_t to them and store s in sz the current size
         // allows us to write babyVector v(3) with three elements set to default value of 0.0
         for (std::size_t i = 0; i < s; ++i)
             elem[i] = 0.0; // init elements with 0.0 by default
@@ -13,7 +13,7 @@ namespace myNaive
     babyVector::babyVector(std::initializer_list<double> lst) : sz{lst.size()}, elem{new double[sz]}, space{lst.size()}
     {
 
-        // included size_t as there was implicit conversion of lst.size() which is of type size_t (e.g. a 64-bit unsigned integer) to an int
+        // included size_t as there was implicit conversion of lst.size() which is of type size_t (e.g. a 64-bit unsigned size_teger) to an size_t
         // (e.g. 32-bit signed) and with {} gives a narrowing error
         // Now allows us to write babyVector v {1.0, 2.0, 3.0} instead of
         // babyVector v(3); then v[0] = 1.0, etc
@@ -41,7 +41,7 @@ namespace myNaive
         {
             if (rhs.sz <= space)
             {
-                for (int i = 0; i < rhs.sz; ++i)
+                for (size_t i = 0; i < rhs.sz; ++i)
                     elem[i] = rhs.elem[i]; // copy elements
                 sz = rhs.sz;
             }
@@ -68,14 +68,14 @@ namespace myNaive
         rhs.sz = 0;
         return *this;
     }
-    void babyVector::resize(int newsize)
+    void babyVector::resize(size_t newsize)
     {
         reserve(newsize);
-        for (int i = sz; i < newsize; ++i)
+        for (size_t i = sz; i < newsize; ++i)
             elem[i] = 0.0; // init new elements
         sz = newsize;
     }
-    void babyVector::reserve(int newalloc)
+    void babyVector::reserve(size_t newalloc)
     {
         if (newalloc <= space)
             return;                       // never decrease allocation
