@@ -6,21 +6,21 @@
 
 #include "../src/genericVec.cpp"
 
-template <typename T>
-void testDefaultConstructor()
-{
-    genericVec<T> vec;
-    if (vec.capacity() == 0 && vec.getElem() == nullptr)
-        std::cout << "DefaultConstructor: Passed" << std::endl;
-    else
-        std::cout << "DefaultConstructor: Failed" << std::endl;
-}
+//template<typename T, class A = std::allocator<T>>
+//void testDefaultConstructor()
+//{
+//    myNaive::genericVec<T> vec;
+//    if (vec.capacity() == 0 && vec.checkElem() == nullptr)
+//        std::cout << "DefaultConstructor: Passed" << std::endl;
+//    else
+//        std::cout << "DefaultConstructor: Failed" << std::endl;
+//}
 
-template <typename T>
+template<typename T, class A = std::allocator<T>>
 void testSizeConstructor()
 {
     size_t size = 5;
-    genericVec<int> vec(size);
+    myNaive::genericVec<int> vec(size, A{});
 
     if (vec.size() == size)
     {
@@ -34,7 +34,7 @@ void testSizeConstructor()
             }
         }
 
-        if (allZero && vec.getElem() != nullptr)
+        if (allZero && vec.checkElem() != nullptr)
             std::cout << "SizeConstructor: Passed" << std::endl;
         else
             std::cout << "SizeConstructor: Failed" << std::endl;
@@ -45,44 +45,44 @@ void testSizeConstructor()
     }
 }
 
-//template <typename T>
-//void testInitListConstructor()
-//{
-//    std::initializer_list<T> lst = {1, 2, 3, 4, 5};
-//    genericVec<T> vec(lst);
-//
-//    if (vec.size() == lst.size() && vec.getElem() != nullptr)
-//    {
-//        bool elementsMatch = true;
-//        size_t i = 0;
-//        for (const auto &elem : lst)
-//        {
-//            if (vec[i] != elem)
-//            {
-//                elementsMatch = false;
-//                break;
-//            }
-//            ++i;
-//        }
-//
-//        if (elementsMatch)
-//            std::cout << "InitListConstructor: Passed" << std::endl;
-//        else
-//            std::cout << "InitListConstructor: Failed" << std::endl;
-//    }
-//    else
-//    {
-//        std::cout << "InitListConstructor: Failed" << std::endl;
-//    }
-//}
+template<typename T, class A = std::allocator<T>>
+void testInitListConstructor()
+{
+    std::initializer_list<T> lst = {1, 2, 3, 4, 5};
+    myNaive::genericVec<T> vec(lst);
 
-template <typename T>
+    if (vec.size() == lst.size() && vec.checkElem() != nullptr)
+    {
+        bool elementsMatch = true;
+        size_t i = 0;
+        for (const auto &elem : lst)
+        {
+            if (vec[i] != elem)
+            {
+                elementsMatch = false;
+                break;
+            }
+            ++i;
+        }
+
+        if (elementsMatch)
+            std::cout << "InitListConstructor: Passed" << std::endl;
+        else
+            std::cout << "InitListConstructor: Failed" << std::endl;
+    }
+    else
+    {
+        std::cout << "InitListConstructor: Failed" << std::endl;
+    }
+}
+
+template<typename T, class A = std::allocator<T>>
 void testCopyConstructor()
 {
-    genericVec<T> vec1 = {1, 2, 3, 4, 5};
-    genericVec<T> vec2(vec1);
+    myNaive::genericVec<T> vec1 = {1, 2, 3, 4, 5};
+    myNaive::genericVec<T> vec2(vec1);
 
-    if (vec1.size() == vec2.size() && vec1.getElem() != vec2.getElem())
+    if (vec1.size() == vec2.size() && vec1.checkElem() != vec2.checkElem())
     {
         bool elementsMatch = true;
         for (size_t i = 0; i < vec1.size(); ++i)
@@ -105,10 +105,10 @@ void testCopyConstructor()
     }
 }
 
-template <typename T>
+template<typename T, class A = std::allocator<T>>
 void testPushBack()
 {
-    genericVec<T> vec;
+    myNaive::genericVec<T> vec;
     if (vec.capacity() == 0 && vec.size() == 0)
     {
         vec.push_back(1);
@@ -137,10 +137,10 @@ void testPushBack()
     }
 }
 
-template <typename T>
+template<typename T, class A = std::allocator<T>>
 void testReserve()
 {
-    genericVec<T> vec;
+    myNaive::genericVec<T> vec;
     if (vec.size() == 0)
     {
         vec.reserve(10);
@@ -167,10 +167,10 @@ void testReserve()
     }
 }
 
-template <typename T>
+template<typename T, class A = std::allocator<T>>
 void testResize()
 {
-    genericVec<T> vec;
+    myNaive::genericVec<T> vec;
     if (vec.size() == 0)
     {
         vec.resize(5);
@@ -218,10 +218,10 @@ void testResize()
     }
 }
 
-template <typename T>
+template<typename T, class A = std::allocator<T>>
 void testAt()
 {
-    genericVec<T> vec = {1, 2, 3, 4, 5};
+    myNaive::genericVec<T> vec = {1, 2, 3, 4, 5};
 
     bool elementsMatch = true;
     for (size_t i = 0; i < vec.size(); ++i)
@@ -249,10 +249,10 @@ void testAt()
         std::cout << "At: Failed" << std::endl;
 }
 
-template <typename T>
+template<typename T, class A = std::allocator<T>>
 void testSubscriptOperator()
 {
-    genericVec<T> vec = {1, 2, 3, 4, 5};
+    myNaive::genericVec<T> vec = {1, 2, 3, 4, 5};
 
     bool elementsMatch = true;
 
@@ -275,11 +275,11 @@ void generateMemoryLeak()
 int main()
 {
 
-    testDefaultConstructor<int>();
-    //testSizeConstructor<int>();
-    //testInitListConstructor<int>();
-    //testCopyConstructor<int>();
-    //testPushBack<int>();
+    //testDefaultConstructor<int>();
+    testSizeConstructor<int>();
+    testInitListConstructor<int>();
+    testCopyConstructor<int>();
+    testPushBack<int>();
     //testReserve<int>();
     //testResize<int>();
     //testAt<int>();

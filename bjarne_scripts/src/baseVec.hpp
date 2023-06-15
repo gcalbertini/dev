@@ -26,6 +26,12 @@ namespace myNaive
             std::uninitialized_copy(other.elem, other.elem + other.sz, elem);
         }
 
+        baseVec(const A &a, std::initializer_list<T> lst) : alloc{a}, sz{lst.size()}, space{lst.size()}
+        {
+            std::uninitialized_copy(lst.begin(), lst.end(), elem);
+            std::cout << "vecBase::vecBase(lst)\n";
+        }
+
         // Copy assignment operator
         baseVec &operator=(const baseVec &other)
         {
@@ -79,7 +85,10 @@ namespace myNaive
             return *this;
         }
 
-        ~baseVec(alloc.deallocate(elem, space));
+        ~baseVec()
+        {
+            alloc.deallocate(elem, space);
+        }
     };
 
 }
