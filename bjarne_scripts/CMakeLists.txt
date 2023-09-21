@@ -8,9 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(FetchContent)
 FetchContent_Declare(
   googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG b796f7d44681514f58a683a3a71ff17c94edb0c1 # release-1.13, update often
-  OVERRIDE_FIND_PACKAGE
+  URL https://github.com/google/googletest/archive/f8d7d77c06936315286eb55f8de22cd23c188571.zip #release 1.14
 )
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -24,7 +22,8 @@ set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 # List all your source files individually
 set(SRC_FILES
-    ${SRC_DIR}/generalVec.cpp
+    ${SRC_DIR}/Chrono.hpp
+    ${SRC_DIR}/Chrono.cpp
     # Add more source files as needed
 )
 
@@ -39,7 +38,7 @@ set(TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR}/tests)
 
 # List all your test source files individually
 set(TEST_SOURCES
-    ${TEST_DIR}/test_generalVec.cpp
+    ${TEST_DIR}/test_chrono.cpp
     # Add more test source files as needed
 )
 
