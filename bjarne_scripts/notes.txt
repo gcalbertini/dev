@@ -1,0 +1,158 @@
+abstract class: a class that can only be used as a base class and uses pure virtual functions in order to do so
+No objects of an abstract class can be created (except for base subobjects of a class derived from it) and no non-static 
+data members whose type is an abstract class can be declared. Pointers and references to an abstract class can be declared.
+=========================
+virtual function: specifies that a non-static member function is virtual and supports 
+dynamic dispatch, i.e., can be redefined in derived class *if needed* (override optional)
+========================
+pure virtual method:  virtual returnType foo() = 0; or virtual returnType g() override = 0 so
+*required* to be implemented by a derived class if the derived class is not abstract.
+=========================
+concrete class: opposite of ABC and can create a class; can be derived from ABC
+=========================
+protected members: prevents us from making objects of this type directly; accessible in the class that defines them and in classes that inherit from that class
+=========================
+private members: only accessible within the class defining them
+=========================
+friends of their derived classes: both protected and private are available to these classes they are friends to (can be a global function or member function of another class)
+friend return_type function_name (arguments);    // for a global function
+            or
+friend return_type class_name::function_name (arguments);    // for a member function of another class
+========================
+constructor: is a special non-static member function of a class that is used to initialize objects of its class type
+========================
+destructor: is a special member function that is called when the lifetime of an object ends. 
+The purpose of the destructor is to free the resources that the object may have acquired during its lifetime. 
+========================
+delete keyword prevente copy constructor and copy assignment.
+obj(const obj&) = delete // prevents copying
+obj& operator=(const obj&) = delete // prevents assignment
+========================
+operator overload: T& operator=(const T& other) for copy assignment for example
+========================
+inheritance:  inheritance is the mechanism of basing an object or class upon another object 
+(prototype-based inheritance) or class (class-based inheritance), 
+retaining similar implementation. Also defined as deriving new classes (sub classes) 
+from existing ones such as super class or base class and then forming them into a 
+hierarchy of classes. In most class-based object-oriented languages like C++, an object 
+created through inheritance, a "child object", acquires all the properties and behaviors
+ of the "parent object", with the exception of: constructors, destructors, overloaded 
+ operators and friend functions of the base class.
+==========================
+general polymorphism: concept that you can access objects of different types through the same interface. Each type can provide its own independent implementation of this interface.
+==========================
+Run-time polymorphism/dynamic dispatch/run-time dispatch/late binding: function called is determined at run-time based on object used (for virtual function methods)
+==========================
+Compile-time/static dispatch/polymorphism: for operator overloading and function overloading where signatures are changed but functions have the same name 
+==========================
+encapsulation: keeping implementation details of our classes private to protect them from direct use that could complicate maintenance
+thus prevents external code from being concerned with the internal workings of an object; encourages decoupling
+==========================
+vtable: how most C++ implementations do polymorphism. For each concrete implementation of a class,
+there is a table of function pointers ( _vptr is the hidden pointer) to all the virtual methods. A pointer to this table 
+(called the virtual table) exists as a data member in all the objects. When one calls a virtual 
+method, we lookup the object's v-table and call the appropriate derived class method.
+==========================
+template: mechanism which allows a programmer to use types as paramters for a class or a function. 
+the compiler then generates a specific class or function when we provide specific types as arguments 
+==========================
+metaprogramming: writing code that writes more code for you at compile-time like using templates.
+With these techniques, you can do things like compute factorials or construct complicated dynamic types that present high level data, 
+all without any run-time overhead 
+==========================
+static cast: compile time; does things like implicit conversions between types 
+(such as int to float, or pointer to void*), and it can also call explicit conversion functions.
+even if you think you can somehow typecast a particular object pointer into another but it’s illegal, 
+the static_cast will not allow you to do this; to use static_cast in case of inheritance, the base class must be accessible, 
+non virtual and unambiguous. static_cast operator allows casting from any pointer type to void pointer and vice versa.
+static_cast <dest_type> (source);
+===========================
+dynamic cast: In C++, dynamic casting is mainly used for safe 
+downcasting at run time. To work on dynamic_cast there must be one virtual function in the base 
+class. A dynamic_cast works only polymorphic base class because it uses this information to 
+decide safe downcasting. Casting a base class pointer (or reference) to a derived class pointer 
+(or reference) is known as downcasting. Casting a derived class pointer (or reference) to a base class pointer 
+(or reference) is known as upcasting. Now, If the cast fails and new_type is a pointer type, it returns a null 
+pointer of that type.
+============================
+reinterpret cast: It is used to convert a pointer of some data type into a pointer of another data type, even if the data types before and after conversion are different.
+t does not check if the pointer type and data pointed by the pointer is same or not. It doesn’t have any return type. It simply converts the pointer type.
+============================
+============================
+STL containers
+===========================
+vector: contiguously allocated sequence of elements; use as default container
+list: doubly-linked list; used when need to insert and delete elem without moving existing ones
+deque: mix of list and vector; don't use until have expert knowledge of algos and machine arch
+map: a balanced ordered tree; use when needing to access elements by value
+multimap: balanced ordered tree where there can be multiple copies of a key
+unordered_map: a hash table; optimized version of map used for large maps when you need high perf and can create a good hash function
+unordered_multimap: as above but multiple copies of a key
+set: balanced ordered tree; use when need to keep track of individual values
+multiset: as above but multiple keys 
+unordered_set: like unordered_map but just with values not (k,v) pairs
+unordered_multiset: like unordered_multimap, but just with values not (k,v) pairs
+array: fixed size array that doesnt suffer most problems as built-in variants
+============================
+DATA STRUCTURES
+============================
+ARRAY 
+Values contiguous in RAM. As long as we know index order of elements, can insert and remove in O(1) best case
+To insert/remove into middle O(n) as need to shift elements overhead
+==============================
+LINKED LIST 
+Values are not contiguous in RAM but connected by pointers. To insert/remove from the end O(1) as we have nullptr at ends
+To insert into middle, assuming you know address, can detach and reaatach pointers for O(1), else O(n) to count from beginning to where you want to be
+==============================
+HASH MAP 
+Instead of a key, have an index [0, n-1] not necessarily evenly (NOT ORDERED) spaced or ints (can have chars), 
+then map each to some value with a hash function.
+Can insert and remove in O(1) as we just find the key and drop or just add to the pile as is unordered.
+Searching for key also O(1) 
+==================================
+QUEUE 
+A doubly-linked-list. Push/pop from either front or back is O(1). Typically push elements to the back and pop from the front. 
+===========================
+BINARY TREE 
+Typically a tree map where each node has a key value mapped to true value of node. For every child node 
+spawned to the left of the parent node, value is less than that of parent's. For child nodes spawned to the right,
+we get nodes with higher values. 
+For a balanced tree: insert/remove/search all done in O(log n) time. What makes it balanced? 
+For each level, the height of the left subtree is the same as the right one, 
+so every root at that level has either two nodes or one node. 
+Values are ordered so if you DFS, can get ordered list of elements. 
+For unbalanced tree: built from sorted data is effectively the same as a linked list as elem increase so O(n) search worst case
+=============================
+Trie/Prefix tree
+Each node usually represents a single character and has up to 26 children, one of each chars in alpha
+To insert "ANT" having A->N connection, then just need additional T node. Insert/search then O(n)
+Helpful when you know the prefixes to words
+====================
+HEAP
+Usually min/max heap where min/max value will be the root of the tree and the children will always be greater/lesser. 
+Every level of tree will be full except for maybe last level. While visualized as trees Typically
+implement as arrays under the hood: [x|3|6|8|9] to get left 2*i and to get right 2*i+1 for index i
+To get min/max value then O(1) as its parent node. To pop min/max value thne O(logN) also for insertion
+======================
+GRAPH
+Nodes with edges that connect them together. Can be directed (edges have directions) or not to establish paths. Can be 
+represented by adjacency list (Node-Neighbors list) when very dense 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Sorting algos and time complexity: https://www.geeksforgeeks.org/time-complexities-of-all-sorting-algorithms/

@@ -6,6 +6,11 @@
 
 using std::cout, std::endl, std::cin, std::quoted, std::max;
 
+
+//NOTE the next step to this is to introduce metaprogramming to offload factorial work
+// to the compiler with templates with features intoduced in C++14 and beyond
+
+
 bool legal_int(char *str)
 {
 	// while not at end of buffer (null terminator); or may use "" but not standard way
