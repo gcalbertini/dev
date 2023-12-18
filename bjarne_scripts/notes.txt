@@ -138,21 +138,190 @@ GRAPH
 Nodes with edges that connect them together. Can be directed (edges have directions) or not to establish paths. Can be 
 represented by adjacency list (Node-Neighbors list) when very dense 
 
+==================
+==================
+A hashmap (or unordered_map in C++ terminology) is a data structure that maps keys to values. 
 
+A hashmap typically consists of an array (or a table) of buckets, and each bucket may contain a linked list or
+ another data structure to handle collisions. Here are the main components:
+    1. Array of Buckets: The hashmap has an array of buckets, and the size of this array is usually
+        determined based on the expected number of elements and the desired level of performance.
+    2. Bucket: Each element in the array is a bucket, and it serves as a container for key-value pairs. The bucket may contain
+        a linked list, a binary search tree, or another structure to handle multiple key-value pairs that hash to the same index (collisions).
+    3. Key-Value Pairs: Each key-value pair represents the data stored in the hashmap. The key is used to calculate the hash code, which is then
+        used to determine the index (bucket) where the key-value pair should be stored.
+    4. Hash Function: A hash function is used to convert a key into an index within the array of buckets. The goal of a good 
+        hash function is to distribute keys evenly across the array, reducing the likelihood of collisions.
++-------------------------------------+
+| Array of Buckets                    |
++-------------------------------------+
+| Bucket 0                            |
+|   |-> (Key1, Value1)                |
+|   |-> (Key2, Value2)                |
+|   |-> ...                           |
+| Bucket 1                            |
+|   |-> (Key3, Value3)                |
+|   |-> ...                           |
+| ...                                 |
+| Bucket N                            |
+|   |-> ...                           |
++-------------------------------------+
 
+When you want to insert or retrieve a key-value pair, the hashmap calculates the hash code of the key, 
+maps it to an index in the array, and then searches or inserts the key-value pair in the corresponding bucket.
 
+It's important to note that modern hashmaps often include optimizations, such as dynamically resizing the array
+ to maintain a balance between load factor and performance. The load factor is the ratio of the number of stored 
+ elements to the number of buckets, and keeping it within a certain range helps to prevent performance 
+ degradation due to collisions.
+=============================
+==============================
+A process and a thread are both fundamental concepts in operating systems and concurrent programming, but they serve
+ different purposes and have distinct characteristics. Here are the key differences between a process and a thread:
 
+    Definition:
+        Process: A process can be viewed as an independent program in execution. It has its own memory space, resources, and state. 
+        Processes are typically isolated from each other and communicate through inter-process communication mechanisms.
 
+        Thread: A thread is the smallest unit of execution within a process. Threads share the same memory space and resources, 
+        such as file handles, with other threads in the same process. Multiple threads within a process can run concurrently.
 
+    Memory Space:
+        Process: Each process has its own address space, which includes code, data, and system resources. 
+        Processes are isolated from each other, and communication between processes usually involves inter-process communication mechanisms.
 
+        Thread: Threads within the same process share the same address space. This means they can directly communicate with each other through 
+        shared variables and can access the same data structures.
 
+    Resource Overhead:
+        Process: Processes have higher resource overhead compared to threads because each process has its own memory space, 
+        file descriptors, and other resources.
 
+        Thread: Threads have lower resource overhead since they share resources with other threads in the same process.
 
+    Communication:
+        Process: Inter-process communication mechanisms, such as message passing or shared files, are used for communication between processes.
+        Thread: Threads within the same process can communicate more easily through shared memory since they have access to the same data structures.
 
+    Creation and Termination:
+        Process: Processes are typically heavier to create and terminate. Creating a new process involves duplicating the existing process, 
+        including its memory space.
 
+        Thread: Threads are lighter weight and quicker to create and terminate compared to processes.
 
+    Independence:
+        Process: Processes are independent of each other, and the failure of one process does not directly affect others.
 
+        Thread: Threads within the same process are more interdependent. If one thread crashes or encounters an error, 
+        it can potentially affect the entire process.
 
+In summary, a process is an independent program with its own memory space, while a thread is a 
+unit of execution within a process that shares the same memory space with other threads in that process. 
+Processes are more isolated, have higher resource overhead, and communicate through inter-process communication mechanisms, 
+while threads share resources and communicate more easily through shared memory.
+=======================
+======================
+Purpose:
+
+    HashMap: A hashmap (or unordered_map in C++, for example) is designed to store key-value pairs, where each key is unique. 
+    It uses a hash function to map keys to indices in an array, allowing for efficient insertion, retrieval, and deletion of key-value pairs.
+
+    Set: A set is a collection of unique elements, and it only stores values without associated keys. The primary goal of a set is to provide a
+     way to check for the presence or absence of an element in the collection.
+
+Structure:
+
+    HashMap: A hashmap is typically implemented as an array of buckets, and each bucket can contain a linked list, a binary search tree, 
+    or another structure to handle collisions (multiple keys hashing to the same index).
+
+    Set: A set is commonly implemented as a hashmap where only keys are used (with a dummy value, for example) or as a specialized data 
+    structure optimized for efficient membership testing, such as a balanced tree.
+
+Key Characteristics:
+
+    HashMap: Requires both a key and a value. The key is used for indexing and the value represents the associated data.
+
+    Set: Only contains the elements (values), and it is concerned with checking for the presence or absence of these elements.
+
+Usage:
+
+    HashMap: Used when you need to associate a value with each key, and you want efficient key-based lookups. 
+    Useful for scenarios where you need to store and retrieve data based on some identifier.
+
+    Set: Used when you only need to maintain a unique collection of elements and do not need to associate any additional 
+    information (values) with those elements.
+
+std::unordered_map<int, std::string> myHashMap;
+myHashMap[1] = "One";
+myHashMap[2] = "Two";
+myHashMap[3] = "Three";
+
+std::unordered_set<int> mySet;
+mySet.insert(1);
+mySet.insert(2);
+mySet.insert(3);
+
+In summary, a hashmap is a key-value store, while a set is focused on maintaining a unique collection 
+of elements without associated values. Hashmaps can be used to implement sets,
+ but the choice between them depends on whether you need to associate additional data (values) with your keys 
+ or if you simply want to manage a collection of unique elements.
+===============
+===============
+References and pointers are both used in C++ to indirectly access variables, but they have some key differences:
+
+Reference: Once a reference is declared, it must always refer to the same object. 
+The syntax for declaring a reference is simpler than that of a pointer.
+
+int x = 10;
+int& ref = x;  // Declaration and initialization of a reference
+
+Pointer: A pointer can be re-assigned to point to different objects during its lifetime.
+ The syntax for declaring a pointer involves the use of an asterisk.
+
+    int x = 10;
+    int* ptr = &x; // Declaration and initialization of a pointer
+
+Nullability:
+
+    Reference: Cannot be null. It must always refer to a valid object.
+
+    Pointer: Can be assigned a null value (nullptr in modern C++ or NULL in older versions). This allows pointers to represent the absence of an object.
+
+Memory Management:
+
+    Reference: Once a reference is bound to an object, it cannot be rebound to refer to a different object. 
+    References don't need to be explicitly deallocated, and there is no "null reference."
+
+    Pointer: Pointers can be reassigned to point to different objects, and memory allocated using pointers needs to be explicitly 
+    deallocated to avoid memory leaks.
+
+Indirection (Dereferencing):
+
+    Reference: No explicit dereferencing is needed. Accessing a reference is similar to accessing the actual object.
+
+int x = 10;
+int& ref = x;
+int value = ref; // No explicit dereferencing
+
+Pointer: Requires explicit dereferencing using the asterisk (*) operator to access the value pointed to by the pointer.
+
+        int x = 10;
+        int* ptr = &x;
+        int value = *ptr; // Explicit dereferencing
+
+    Reassignment:
+        Reference: Cannot be reassigned to refer to a different object once initialized.
+
+        Pointer: Can be reassigned to point to different objects during its lifetime.
+
+    Size:
+        Reference: Typically takes up the same amount of memory as the type it refers to. No separate memory is allocated for a reference.
+
+        Pointer: Requires additional memory to store the memory address it points to.
+
+In summary, references provide a simpler syntax, are non-nullable, and have automatic dereferencing, 
+while pointers offer greater flexibility with reassignment, nullability, and explicit dereferencing. 
+The choice between them depends on the specific requirements of your program.
 
 
 Sorting algos and time complexity: https://www.geeksforgeeks.org/time-complexities-of-all-sorting-algorithms/
