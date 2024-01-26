@@ -311,9 +311,61 @@ struct big_object
 		return *this;
 	}
 };
+
+// std::move to transfer ownership of a dynamic object into a thread
+
 void process_big_object(std::unique_ptr<big_object>){/*something*/};
 std::unique_ptr<big_object> p(new big_object);
 p->prepare_data(42);
 std::thread t{process_big_object, std::move(p)};
 // By specifying std::move(p) in the std::thread constructor, the ownership of big_object is transferred first into internal storage
 // for the newly created thread and then into process_big_object.
+
+// Trasnfger thread ownership
+
+void foo();
+void bar();
+std::thread t1(foo); // new thread for t1; foo is a temp object
+// Now transfer thread over to t2; t1 no longer has associated thread of execution
+//  explicit call of move since t1 is a named object
+std::thread t2 = std::move(t1);
+// bar is seen as a temp object -- moving from temps is automatic and implicit
+// so will not require move semantics
+t1 = std::thread(bar);
+// t3 is default constructed which means its created without any assoc thrd of exec
+std::thread t3;
+// ownership transfer to t3 with explicit call of move() since t2 is named object
+t3 = std::move(t2);
+// transfer back to where t1 started; but in this case t1 had an associated thread
+t1 = std::move(t3); // this line terminates program as t1 holding bar info; std::terminate() invoked
+// thus we must explicitly wait for a thread to complete or detach it before destruction,
+// and the same applies to assignment: can't just drop a thread by assigning a new
+// value to the std::thread object that manages it
+
+// transfer ownership out of a function using move support semantics
+std::thread f()
+{
+	void foo();
+	// The implicit move constructor of std::thread supports
+	// transferring ownership of the thread object from the
+	// local scope of the f() function to the calling code,
+	// so return invokes the move const of std thread
+	// to transfer to calling obj (callee)
+	return std::thread(foo);
+}
+std::thread g()
+{
+	void bar(int);
+	std::thread t(bar, 42) return t; // move semantics to calling object from local
+}
+
+// Likewise, if ownership should be transferred into a function,
+//  it can accept an instance of std::thread by value as one of the params
+void f(std::thread t);
+void g()
+{
+	void some_function();
+	f(std::thread(some_function));
+	std::thread t(some_function);
+	f(std::move(t));
+}

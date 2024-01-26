@@ -322,6 +322,82 @@ Pointer: Requires explicit dereferencing using the asterisk (*) operator to acce
 In summary, references provide a simpler syntax, are non-nullable, and have automatic dereferencing, 
 while pointers offer greater flexibility with reassignment, nullability, and explicit dereferencing. 
 The choice between them depends on the specific requirements of your program.
+=================
+std::unique_ptr and std::shared_ptr are smart pointers in C++ that provide automatic memory management and ownership semantics. Here are the key differences between them:
 
+    Ownership:
+        std::unique_ptr: It represents sole ownership of a dynamically allocated object. 
+
+        There can be only one std::unique_ptr that owns a particular object. When a std::unique_ptr is moved or reset,
+         it transfers ownership to the new std::unique_ptr, and the original pointer becomes null.
+
+        std::shared_ptr: It represents shared ownership of a dynamically allocated object. 
+        Multiple std::shared_ptr instances can share ownership of the same object. The object is only deleted when the last std::shared_ptr pointing to it is destroyed or reset.
+
+    Performance Overhead:
+        std::unique_ptr: Generally has lower performance overhead than std::shared_ptr.
+         It is a lightweight smart pointer designed for scenarios where exclusive ownership is sufficient.
+
+        std::shared_ptr: Has additional overhead to manage the reference count, 
+        leading to slightly higher performance costs compared to std::unique_ptr.
+
+    Memory Overhead:
+        std::unique_ptr: Typically has lower memory overhead than std::shared_ptr. 
+        It only needs to store a pointer and potentially a deleter function.
+
+        std::shared_ptr: Requires additional memory to store the reference count,
+         leading to higher memory overhead compared to std::unique_ptr.
+
+    Use Cases:
+        std::unique_ptr: Preferred when exclusive ownership is required, and there is no need for shared ownership. 
+        It is more suitable for scenarios where ownership is transferred, such as returning a pointer from a function or using it in a container.
+
+        std::shared_ptr: Suitable when multiple entities need to share ownership of an object. It is commonly used in scenarios like circular 
+        dependencies or scenarios where it's challenging to determine the exact lifetime of objects.
+
+    Move Semantics:
+        std::unique_ptr: Supports move semantics. When a std::unique_ptr is moved, ownership is transferred, and the source pointer becomes null.
+
+        std::shared_ptr: Also supports move semantics. When a std::shared_ptr is moved, the ownership 
+        is shared between the source and the destination, and the source pointer remains valid.
+
+    Thread Safety:
+        std::unique_ptr: Not inherently thread-safe. Designed for exclusive ownership in a single-threaded or 
+        carefully synchronized environment.
+
+        std::shared_ptr: Provides built-in reference counting, making it thread-safe. 
+        Multiple std::shared_ptr instances can safely share ownership across multiple threads.
+
+In summary, choose between std::unique_ptr and std::shared_ptr based on your specific ownership requirements. 
+If exclusive ownership is sufficient, and you want to minimize performance and memory overhead, use std::unique_ptr. 
+If shared ownership is necessary and you need the automatic memory management features of reference counting, use std::shared_ptr.
 
 Sorting algos and time complexity: https://www.geeksforgeeks.org/time-complexities-of-all-sorting-algorithms/
+
+
+MULTITHREEADING AND CUDA; Include AI algo Qs!
+
+What is the free lunch?
+
+What is context switching?
+
+What is task switching?
+
+Difference between thread and a process?
+
+Difference between parallelism and concurrency?
+
+Drawbacks of processes and what about those for threads?
+
+Drawbacks of too much multithreading? 
+
+What is RAII?
+
+What is a mutex?
+
+What is Amdahl's law? What law rose to challenge it?
+
+When would it make sense to use a detached (daemon) thread? 
+When theres another mechanism for ID when thread has completed or where the thread
+is uded in a fire-and-forget task
+
